@@ -1,16 +1,15 @@
 // external imports
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 require('dotenv').config()
 
-async function dbConnect() {
+export async function dbConnect() {
   // use mongoose to connect this app to our database on mongoDB using the DB_URL (connection string)
   mongoose
     .connect(
-        process.env.DB_URL,
+        process.env.DB_URL as string,
       {
         //   these are options to ensure that the connection is done properly
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
+    
       }
     )
     .then(() => {
@@ -22,4 +21,3 @@ async function dbConnect() {
     });
 }
 
-module.exports = dbConnect;
