@@ -46,32 +46,14 @@ app.use((req, res, next) => {
 
 
 app.get('/articles', (req, res) => {
-   Article.find({}).then(articles => {
-    res.status(200).send({
-        items: articles
+    Article.find({}).then(articles => {
+        res.status(200).send({
+            items: articles
+        })
     })
-   })
 })
 
-app.post('/articles',auth, (req, res) => {
-    
-    const post = new Article({
-        title: req.body.title,
-        paragraph: req.body.paragraph
-    })
 
-    post.save().then((result)=> {
-        res.status(201).send({
-            message: "Article Created Successfully",
-            result
-        })
-    }).catch((error)=> {
-        res.status(500).send({
-            message: "Error Creating Post",
-            error
-        })
-    })
- })
 
 app.post("/register", (req, res) => {
     // User.findOne({email: req.body.email}).then((user) => {
@@ -164,6 +146,26 @@ app.post('/login', (req, res) => {
 app.get("/auth-endpoint", auth, (request, response) => {
     response.json({ message: "You are authorized to access me" });
 });
+
+app.post('/articles', auth, (req, res) => {
+
+    const post = new Article({
+        title: req.body.title,
+        paragraph: req.body.paragraph
+    })
+
+    post.save().then((result) => {
+        res.status(201).send({
+            message: "Article Created Successfully",
+            result
+        })
+    }).catch((error) => {
+        res.status(500).send({
+            message: "Error Creating Post",
+            error
+        })
+    })
+})
 
 app.listen(port, () => {
     console.log(`App Demo listening on port ${port}`)
