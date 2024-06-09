@@ -45,16 +45,6 @@ app.use((req, res, next) => {
 })
 
 
-app.get('/articles', (req, res) => {
-    Article.find({}).then(articles => {
-        res.status(200).send({
-            items: articles
-        })
-    })
-})
-
-
-
 app.post("/register", (req, res) => {
     // User.findOne({email: req.body.email}).then((user) => {
     //     if(user) return res.status(400).send({
@@ -105,7 +95,6 @@ app.post('/login', (req, res) => {
                     if (!pwIsCorrect) {
                         return res.status(400).send({
                             message: "Password does not match",
-
                         })
                     }
                     //   create JWT token
@@ -147,11 +136,22 @@ app.get("/auth-endpoint", auth, (request, response) => {
     response.json({ message: "You are authorized to access me" });
 });
 
+app.get('/articles', auth, (req, res) => {
+    Article.find({}).then(articles => {
+        res.status(200).send({
+            items: articles
+        })
+    })
+})
+
 app.post('/articles', auth, (req, res) => {
+
+    console.log(auth)
 
     const post = new Article({
         title: req.body.title,
-        paragraph: req.body.paragraph
+        paragraph: req.body.paragraph,
+        ownerID: auth.name
     })
 
     post.save().then((result) => {

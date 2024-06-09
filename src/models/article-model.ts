@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const articleSchema = new mongoose.Schema({
     title: {
@@ -9,6 +9,11 @@ const articleSchema = new mongoose.Schema({
     paragraph: {
         type: String,
         required: [true, 'Please provide the paragraph'],
+        unique: false
+    },
+    ownerID: {
+        type: Schema.ObjectId,
+        required: [true, 'Please specify the user'],
         unique: false
     }
 })
